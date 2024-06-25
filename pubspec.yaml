@@ -22,3 +22,6 @@ flutter:
   uses-material-design: true
   assets:
     - lib/images/logo_homing.png
+    - lib/images/casa1.png
+    - lib/images/PuntosNavegacion.png
+    - lib/images/casa2.png
