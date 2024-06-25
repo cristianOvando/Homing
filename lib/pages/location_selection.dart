@@ -18,7 +18,6 @@ class _locationSelectPage extends State<locationSelectPage>{
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            // Acción al presionar el botón de regresar
             Navigator.pop(context);
           },
         ),

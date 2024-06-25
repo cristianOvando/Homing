@@ -25,3 +25,7 @@ flutter:
     - lib/images/casa1.png
     - lib/images/PuntosNavegacion.png
     - lib/images/casa2.png
+    - lib/images/CasaSuchiapa.jpg
+    - lib/images/CasaVillaflores.jpg
+    - lib/images/CasaTuxtla.jpg
+    - lib/images/user1.png
