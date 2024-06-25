@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homing/pages/home_page.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -7,6 +8,9 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   String _selectedGender = 'male'; 
+  String _selectedPosition = 'Campo laboral'; 
+
+  List<String> position = ['Campo laboral', 'Estudiante', 'Profesional', 'Mayor de edad'];
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ],
             ),
+            SizedBox(height: 20),
             Container(
               height: 650,
               width: 340,
@@ -43,158 +48,232 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'REGISTRO',
-                      style: TextStyle(
-                        height: 1,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'REGISTRO',
+                        style: TextStyle(
+                          height: 1,
+                          color: Colors.white,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    SizedBox(
+                      height: 40,
+                      width: double.infinity,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Nombres',
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    SizedBox(
+                      height: 40,
+                      width: double.infinity,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Apellidos',
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    SizedBox(
+                      height: 40,
+                      width: double.infinity,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Correo',
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    SizedBox(
+                      height: 40,
+                      width: double.infinity,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Contraseña',
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        obscureText: true,
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Género',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Radio<String>(
+                                  value: 'male',
+                                  groupValue: _selectedGender,
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      _selectedGender = value!;
+                                    });
+                                  },
+                                ),
+                                Text(
+                                  'Masculino',
+                                  style: TextStyle(color: Colors.white, fontSize: 13),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Radio<String>(
+                                  value: 'female',
+                                  groupValue: _selectedGender,
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      _selectedGender = value!;
+                                    });
+                                  },
+                                ),
+                                Text(
+                                  'Femenino',
+                                  style: TextStyle(color: Colors.white, fontSize: 13),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Radio<String>(
+                                  value: 'other',
+                                  groupValue: _selectedGender,
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      _selectedGender = value!;
+                                    });
+                                  },
+                                ),
+                                Text(
+                                  'Otro',
+                                  style: TextStyle(color: Colors.white, fontSize: 13),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 30),
+                    SizedBox(
+                      height: 40,
+                      width: double.infinity,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: 'No. Teléfono',
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        keyboardType: TextInputType.phone,
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    Container(
+                      height: 40,
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 1),
+                        borderRadius: BorderRadius.circular(5),
                         color: Colors.white,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  SizedBox(
-                    height: 40,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Nombres',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          value: _selectedPosition,
+                          dropdownColor: Colors.white,
+                          onChanged: (String? newPosition) {
+                            setState(() {
+                              _selectedPosition = newPosition!;
+                            });
+                          },
+                          items: position.map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
                         ),
-                        filled: true,
-                        fillColor: Colors.white,
                       ),
                     ),
-                  ),
-                  SizedBox(height: 30),
-                  SizedBox(
-                    height: 40,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Apellidos',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
+                    SizedBox(height: 40.0,),
+                    Align(
+                      alignment: Alignment.center,
+                  child: SizedBox(
+                    width: 400,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context, 
+                          MaterialPageRoute(builder: (context) => MyHomePage()),
+                          );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromRGBO(76, 81, 230, 1),
+                        foregroundColor: Colors.white,
                       ),
+                      child: Text('Registrarse'),
                     ),
                   ),
-                  SizedBox(height: 30),
-                  SizedBox(
-                    height: 40,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Correo',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  SizedBox(
-                    height: 40,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Contraseña',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      obscureText: true,
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Género',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Radio<String>(
-                                value: 'male',
-                                groupValue: _selectedGender,
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    _selectedGender = value!;
-                                  });
-                                },
-                              ),
-                              Text(
-                                'Masculino',
-                                style: TextStyle(color: Colors.white, fontSize: 13),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Radio<String>(
-                                value: 'female',
-                                groupValue: _selectedGender,
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    _selectedGender = value!;
-                                  });
-                                },
-                              ),
-                              Text(
-                                'Femenino',
-                                style: TextStyle(color: Colors.white, fontSize: 13),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Radio<String>(
-                                value: 'other',
-                                groupValue: _selectedGender,
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    _selectedGender = value!;
-                                  });
-                                },
-                              ),
-                              Text(
-                                'Otro',
-                                style: TextStyle(color: Colors.white, fontSize: 13),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ],
