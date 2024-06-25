@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:homing/pages/home_page.dart';
 import 'package:homing/pages/landing_page.dart';
 import 'package:homing/pages/register_page.dart';
-import 'package:homing/pages/location_selection.dart';
+import 'package:homing/pages/myhouse_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +11,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,7 +25,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const MyHomePage(),
         '/register': (context) => RegisterPage(),
         '/landing' : (context) => const LandingPage(),
-        '/locationSelect': (context) => const locationSelectPage(),
+        '/myhouse': (context) => const myhousePage()
       },
     );
   }

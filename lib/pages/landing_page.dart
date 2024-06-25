@@ -18,7 +18,6 @@ class _LandingPageState extends State<LandingPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            // Acción al presionar el botón de regresar
             Navigator.pop(context);
           },
         ),
@@ -36,47 +35,63 @@ class _LandingPageState extends State<LandingPage> {
         ),
       ),
       endDrawer: Drawer(
-        child: Column(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text('Nombre'),
-              accountEmail: null,
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Text(
-                  "C",
-                  style: TextStyle(fontSize: 40.0),
+        child: Container(
+          color: Color(0xFF8487EE),
+          child: Column(
+            children: <Widget>[
+              UserAccountsDrawerHeader(
+                decoration: BoxDecoration(
+                  color: Color(0xFF8487EE),
+                ),
+                accountName:
+                    Text('Nombre', style: TextStyle(color: Colors.white)),
+                accountEmail: null,
+                currentAccountPicture: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: Icon(
+                    Icons.person,
+                    size: 40.0,
+                    color: Color(0xFF8487EE),
+                  ),
                 ),
               ),
-            ),
-            ListTile(
-              leading: Icon(Icons.account_circle),
-              title: Text('Mi cuenta'),
-              trailing: Icon(Icons.arrow_forward_ios),
-              onTap: () {
-                // Acción al presionar "Mi cuenta"
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Mis casas'),
-              trailing: Icon(Icons.arrow_forward_ios),
-              onTap: () {
-                // Acción al presionar "Mis casas"
-              },
-            ),
-            Spacer(),
-            ListTile(
-              leading: Icon(Icons.exit_to_app, color: Colors.red),
-              title: Text(
-                'Cerrar sesión',
-                style: TextStyle(color: Colors.red),
+              ListTile(
+                leading: Icon(Icons.account_circle, color: Colors.white),
+                title: Text('Mi cuenta', style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.arrow_forward_ios, color: Colors.white),
+                onTap: () {
+                  // Acción al presionar "Mi cuenta"
+                },
               ),
-              onTap: () {
-                // Acción al presionar "Cerrar sesión"
-              },
-            ),
-          ],
+              ListTile(
+                leading: Icon(Icons.home, color: Colors.white),
+                title: Text('Mis casas', style: TextStyle(color: Colors.white)),
+                trailing: Icon(Icons.arrow_forward_ios, color: Colors.white),
+                onTap: () {
+                  Navigator.pushNamed(context, '/myhouse');
+                },
+              ),
+              Spacer(),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  onPressed: () {
+                    // Acción al presionar "Cerrar sesión"
+                  },
+                  child: Text('Cerrar sesión',
+                      style: TextStyle(color: Colors.white)),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -113,8 +128,10 @@ class _LandingPageState extends State<LandingPage> {
                 height: 200,
                 child: PageView(
                   children: <Widget>[
-                    _buildImageCarousel('lib/images/CasaSuchiapa.jpg', 'Villaflores'),
-                    _buildImageCarousel('lib/images/CasaVillaflores.jpg', 'Suchiapa'),
+                    _buildImageCarousel(
+                        'lib/images/CasaSuchiapa.jpg', 'Villaflores'),
+                    _buildImageCarousel(
+                        'lib/images/CasaVillaflores.jpg', 'Suchiapa'),
                     _buildImageCarousel('lib/images/CasaTuxtla.jpg', 'Tuxtla'),
                   ],
                 ),
@@ -130,9 +147,6 @@ class _LandingPageState extends State<LandingPage> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10.0),
-              _buildRecommendation("Casa villaflores - muy buena", 'lib/images/user1.png'),
-              _buildRecommendation("Depto Suchiapa - Excelente", 'lib/images/user2.png'),
-              _buildRecommendation("Casa Suchiapa - Buena casa", 'lib/images/user3.png'),
             ],
           ),
         ),
