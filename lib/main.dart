@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:homing/pages/home_page.dart';
 import 'package:homing/pages/landing_page.dart';
 import 'package:homing/pages/register_page.dart';
+import 'package:homing/pages/location_selection.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const MyHomePage(),
         '/register': (context) => RegisterPage(),
         '/landing' : (context) => const LandingPage(),
+        '/locationSelect': (context) => const locationSelectPage(),
       },
     );
   }
