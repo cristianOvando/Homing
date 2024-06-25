@@ -31,6 +31,12 @@ class _LandingPageState extends State<LandingPage> {
                 Text("HOMING", style: TextStyle(color: Colors.black)),
               ],
             ),
+            IconButton(
+              icon: Icon(Icons.menu, color: Colors.black),
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+            ),
           ],
         ),
       ),
@@ -43,8 +49,7 @@ class _LandingPageState extends State<LandingPage> {
                 decoration: BoxDecoration(
                   color: Color(0xFF8487EE),
                 ),
-                accountName:
-                    Text('Nombre', style: TextStyle(color: Colors.white)),
+                accountName: Text('Nombre', style: TextStyle(color: Colors.white)),
                 accountEmail: null,
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Colors.white,
@@ -86,8 +91,7 @@ class _LandingPageState extends State<LandingPage> {
                   onPressed: () {
                     // Acción al presionar "Cerrar sesión"
                   },
-                  child: Text('Cerrar sesión',
-                      style: TextStyle(color: Colors.white)),
+                  child: Text('Cerrar sesión', style: TextStyle(color: Colors.white)),
                 ),
               ),
             ],
@@ -128,10 +132,8 @@ class _LandingPageState extends State<LandingPage> {
                 height: 200,
                 child: PageView(
                   children: <Widget>[
-                    _buildImageCarousel(
-                        'lib/images/CasaSuchiapa.jpg', 'Villaflores'),
-                    _buildImageCarousel(
-                        'lib/images/CasaVillaflores.jpg', 'Suchiapa'),
+                    _buildImageCarousel('lib/images/CasaSuchiapa.jpg', 'Villaflores'),
+                    _buildImageCarousel('lib/images/CasaVillaflores.jpg', 'Suchiapa'),
                     _buildImageCarousel('lib/images/CasaTuxtla.jpg', 'Tuxtla'),
                   ],
                 ),
@@ -147,6 +149,7 @@ class _LandingPageState extends State<LandingPage> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10.0),
+              
             ],
           ),
         ),
