@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:homing/pages/home_page.dart';
+import 'package:homing/pages/landing_page.dart';
+import 'package:homing/pages/register_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,11 +17,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 67, 93, 241)),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 67, 93, 241)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MyHomePage(),
+        '/register': (context) => RegisterPage(),
+        '/landing' : (context) => const LandingPage(),
+      },
     );
   }
 }
