@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homing/pages/account_page.dart';
 import 'package:homing/pages/home_page.dart';
 import 'package:homing/pages/landing_page.dart';
 import 'package:homing/pages/register_page.dart';
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => const MyHomePage(),
         '/register': (context) => RegisterPage(),
         '/landing' : (context) => const LandingPage(),
-        '/myhouse': (context) => const myhousePage()
+        '/myhouse': (context) => const myhousePage(),
+        '/account': (context) => const AccountPage(),
       },
     );
   }

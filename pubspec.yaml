@@ -22,3 +22,7 @@ flutter:
   uses-material-design: true
   assets:
     - lib/images/logo_homing.png
+    - lib/images/CasaSuchiapa.jpg
+    - lib/images/CasaVillaflores.jpg
+    - lib/images/CasaTuxtla.jpg
+    - lib/images/user1.png
