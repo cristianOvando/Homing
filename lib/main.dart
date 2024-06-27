@@ -3,10 +3,12 @@ import 'package:homing/pages/account_page.dart';
 import 'package:homing/pages/addhome_page.dart';
 import 'package:homing/pages/home_page.dart';
 import 'package:homing/pages/landing_page.dart';
+import 'package:homing/pages/location_selection.dart';
 import 'package:homing/pages/login_page.dart' as login;
 import 'package:homing/pages/nextaddhome_page.dart';
 import 'package:homing/pages/register_page.dart';
 import 'package:homing/pages/myhouse_page.dart';
+import 'package:homing/pages/searchhome_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,6 +33,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => login.LoginPage(), 
         '/register': (context) => RegisterPage(),
         '/landing': (context) => const LandingPage(),
+        '/searchpage': (context) => SearchPage(searchTerm: ''),
+        '/info': (context) => const locationSelectPage(),
         '/account': (context) => const AccountPage(),
         '/myhouse': (context) => const MyHousePage(),
         '/addhome': (context) => const AddHomePage(),
