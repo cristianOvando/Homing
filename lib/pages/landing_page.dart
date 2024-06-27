@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homing/pages/searchhome_page.dart';
 import 'app_drawer.dart';
 import 'location_page.dart';  
 
@@ -12,11 +13,22 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   int _currentPage = 0;
   final PageController _pageController = PageController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void dispose() {
     _pageController.dispose();
+    _searchController.dispose();
     super.dispose();
+  }
+
+  void _onSearchSubmitted(String query) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SearchPage(searchTerm: query), 
+      ),
+    );
   }
 
   @override
@@ -35,7 +47,14 @@ class _LandingPageState extends State<LandingPage> {
               height: 40,
             ),
             const SizedBox(width: 9),
-            Text("HOMING", style: TextStyle(color: Colors.black)),
+            const Text(
+              'HOMING',
+              style: TextStyle(
+                fontSize: 25,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
       ),
@@ -45,7 +64,7 @@ class _LandingPageState extends State<LandingPage> {
           child: Column(
             children: <Widget>[
               const SizedBox(height: 20.0),
-              Text(
+              const Text(
                 "ENCUENTRA LA CASA QUE BUSCAS CON NOSOTROS",
                 style: TextStyle(
                   color: Colors.black,
@@ -58,6 +77,7 @@ class _LandingPageState extends State<LandingPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: TextField(
+                  controller: _searchController,
                   decoration: InputDecoration(
                     hintText: 'Buscar...',
                     prefixIcon: Icon(Icons.search),
@@ -67,6 +87,7 @@ class _LandingPageState extends State<LandingPage> {
                     filled: true,
                     fillColor: Colors.white,
                   ),
+                  onSubmitted: _onSearchSubmitted,
                 ),
               ),
               const SizedBox(height: 20.0),
@@ -95,7 +116,7 @@ class _LandingPageState extends State<LandingPage> {
                       icon: Icon(Icons.arrow_back_ios, color: Colors.white),
                       onPressed: () {
                         _pageController.previousPage(
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
                         );
                       },
@@ -108,7 +129,7 @@ class _LandingPageState extends State<LandingPage> {
                       icon: Icon(Icons.arrow_forward_ios, color: Colors.white),
                       onPressed: () {
                         _pageController.nextPage(
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
                         );
                       },
@@ -120,7 +141,7 @@ class _LandingPageState extends State<LandingPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(3, (index) {
                   return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 3.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 3.0),
                     width: _currentPage == index ? 12.0 : 8.0,
                     height: _currentPage == index ? 12.0 : 8.0,
                     decoration: BoxDecoration(
@@ -131,7 +152,7 @@ class _LandingPageState extends State<LandingPage> {
                 }),
               ),
               const SizedBox(height: 20.0),
-              Text(
+              const Text(
                 "RECOMENDACIONES",
                 style: TextStyle(
                   color: Colors.black,
@@ -142,7 +163,7 @@ class _LandingPageState extends State<LandingPage> {
               ),
               const SizedBox(height: 10.0),
               Container(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10.0),
@@ -207,7 +228,7 @@ class _LandingPageState extends State<LandingPage> {
 
   Widget _buildRecommendation(String text, String userImagePath, int rating) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: .0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Row(
         children: [
           CircleAvatar(
@@ -220,7 +241,7 @@ class _LandingPageState extends State<LandingPage> {
               children: [
                 Text(
                   text,
-                  style: TextStyle(color: Colors.black, fontSize: 16),
+                  style: const TextStyle(color: Colors.black, fontSize: 16),
                 ),
                 Row(
                   children: List.generate(5, (index) {
