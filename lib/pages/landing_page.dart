@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'app_drawer.dart';
+import 'location_page.dart';  
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -30,7 +31,7 @@ class _LandingPageState extends State<LandingPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'lib/images/logo_homing.png', 
+              'lib/images/logo_homing.png',
               height: 40,
             ),
             const SizedBox(width: 9),
@@ -38,7 +39,7 @@ class _LandingPageState extends State<LandingPage> {
           ],
         ),
       ),
-      endDrawer: const AppDrawer(), 
+      endDrawer: const AppDrawer(),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -81,9 +82,9 @@ class _LandingPageState extends State<LandingPage> {
                         });
                       },
                       children: <Widget>[
-                        _buildImageCarousel('lib/images/casa1.png', 'Villaflores'),
-                        _buildImageCarousel('lib/images/casa2.png', 'Suchiapa'),
-                        _buildImageCarousel('lib/images/CasaTuxtla.jpg', 'Tuxtla'),
+                        _buildImageCarousel(context, 'lib/images/casa1.png', 'Villaflores'),
+                        _buildImageCarousel(context, 'lib/images/casa2.png', 'Suchiapa'),
+                        _buildImageCarousel(context, 'lib/images/CasaTuxtla.jpg', 'Tuxtla'),
                       ],
                     ),
                   ),
@@ -161,36 +162,46 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  Widget _buildImageCarousel(String imagePath, String location) {
-    return Column(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: Image.asset(imagePath, fit: BoxFit.cover, width: 270),
-        ),
-        const SizedBox(height: 20),
-        Column(
-          children: [
-            Text(
-              location,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
+  Widget _buildImageCarousel(BuildContext context, String imagePath, String location) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LocationPage(location: location),
+          ),
+        );
+      },
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.0),
+            child: Image.asset(imagePath, fit: BoxFit.cover, width: 270),
+          ),
+          const SizedBox(height: 20),
+          Column(
+            children: [
+              Text(
+                location,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(5, (index) {
-                return Icon(
-                  index < 5 ? Icons.star : Icons.star_border,
-                  color: Colors.amber,
-                  size: 16.0,
-                );
-              }),
-            ),
-          ],
-        ),
-      ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(5, (index) {
+                  return Icon(
+                    index < 5 ? Icons.star : Icons.star_border,
+                    color: Colors.amber,
+                    size: 16.0,
+                  );
+                }),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
