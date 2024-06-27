@@ -99,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   const SizedBox(height: 40.0),
                   SizedBox(
-                    width: 200,
+                    width: 300,
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.pushNamed(context, '/landing');
