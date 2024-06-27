@@ -3,6 +3,7 @@ import 'package:homing/pages/account_page.dart';
 import 'package:homing/pages/addhome_page.dart';
 import 'package:homing/pages/home_page.dart';
 import 'package:homing/pages/landing_page.dart';
+import 'package:homing/pages/login_page.dart' as login;
 import 'package:homing/pages/nextaddhome_page.dart';
 import 'package:homing/pages/register_page.dart';
 import 'package:homing/pages/myhouse_page.dart';
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const MyHomePage(),
+        '/': (context) => HomePage(),
+        '/login': (context) => login.LoginPage(), 
         '/register': (context) => RegisterPage(),
         '/landing': (context) => const LandingPage(),
         '/account': (context) => const AccountPage(),

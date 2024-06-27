@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:homing/pages/home_page.dart';
+import 'package:homing/pages/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -261,7 +261,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       onPressed: () {
                         Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => MyHomePage()),
+                          MaterialPageRoute(builder: (context) => LoginPage()),
                           );
                       },
                       style: ElevatedButton.styleFrom(
