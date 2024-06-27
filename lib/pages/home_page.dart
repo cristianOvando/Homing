@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:flutter/gestures.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -42,29 +43,30 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     return Scaffold(
       backgroundColor: Color(0xFF9BAAF2),
       body: Center(
-        child: SlideTransition(
-          position: _animation,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                Icons.home,
-                size: 100,
-                color: Colors.black,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SlideTransition(
+              position: _animation,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.home,
+                    size: 100,
+                    color: Colors.black,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'HOMING',
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(height: 10),
-              Text(
-                'HOMING',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-<<<<<<< HEAD
-            ],
-          ),
-=======
             ),
             const SizedBox(height: 30.0),
             Container(
@@ -154,7 +156,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               ),
             ),
           ],
->>>>>>> 8ef438fbc09a2a715b3d800bd29aaaebc18dbc2c
         ),
       ),
     );
