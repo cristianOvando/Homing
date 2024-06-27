@@ -34,7 +34,14 @@ class _LandingPageState extends State<LandingPage> {
               height: 40,
             ),
             const SizedBox(width: 9),
-            Text("HOMING", style: TextStyle(color: Colors.black)),
+            Text(
+                    'HOMING',
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
           ],
         ),
       ),
