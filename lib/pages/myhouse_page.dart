@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'app_drawer.dart';  // Importa AppDrawer aquí
 
 class MyHousePage extends StatefulWidget {
   const MyHousePage({super.key});
@@ -51,34 +52,35 @@ class _MyHousePageState extends State<MyHousePage> {
               ),
               const SizedBox(height: 20),
               SizedBox(
-                    width: 250,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromRGBO(76, 81, 230, 1),
-                        foregroundColor: Colors.white,
-                      ),
-                      child: const Text('Agregar propiedad'),
-                    ),
+                width: 250,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/addhome');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromRGBO(76, 81, 230, 1),
+                    foregroundColor: Colors.white,
                   ),
-                SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  color: Color.fromRGBO(132, 135, 238, 1),
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: const Center(
-                    child: Text(
-                      'MIS PROPIEDADES',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold
-                      ),
+                  child: const Text('Agregar propiedad'),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                width: double.infinity,
+                color: Color.fromRGBO(132, 135, 238, 1),
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: const Center(
+                  child: Text(
+                    'MIS PROPIEDADES',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                
+              ),
             ],
           ),
           actions: [
@@ -91,140 +93,53 @@ class _MyHousePageState extends State<MyHousePage> {
           ],
         ),
       ),
-      endDrawer: Drawer(
-        child: Container(
-          color: Color(0xFF8487EE),
-          child: Column(
-            children: <Widget>[
-              UserAccountsDrawerHeader(
-                decoration: BoxDecoration(
-                  color: Color(0xFF8487EE),
-                ),
-                accountName:
-                    Text('Nombre', style: TextStyle(color: Colors.white)),
-                accountEmail: null,
-                currentAccountPicture: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.person,
-                    size: 40.0,
-                    color: Color(0xFF8487EE),
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.account_circle, color: Colors.white),
-                title: Text('Mi cuenta', style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.arrow_forward_ios, color: Colors.white),
-                onTap: () {
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.home, color: Colors.white),
-                title: Text('Mis casas', style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.arrow_forward_ios, color: Colors.white),
-                onTap: () {
-                  Navigator.pushNamed(context, '/myhouse');
-                },
-              ),
-              Spacer(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  onPressed: () {
-                  },
-                  child: Text('Cerrar sesión',
-                      style: TextStyle(color: Colors.white)),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      endDrawer: const AppDrawer(),  
       body: Center(
         child: Column(
           children: <Widget>[
-            Container(
-              color: Color.fromRGBO(236, 236, 236, 1),
-              child: Column(
-                children: [
-                  Align(
-                    child: Row(
-                      children: [
-                        Image.asset("lib/images/casa1.png", width: 200,),
-                        Column(
-                            children: [
-                            Text('Descripcion breve'),
-                            Text('# '),
-                            Text('3av sur villaflores'),
-                            ],
-                          ),
-                        SizedBox(width: 25,),
-                        Image.asset("lib/images/PuntosNavegacion.png")
-                      ],
-                    )
-                  )
-                ],
-              ),
-            ),
-            SizedBox(height: 10,),
-            Container(
-              color: Color.fromRGBO(236, 236, 236, 1),
-              child: Column(
-                children: [
-                  Align(
-                    child: Row(
-                      children: [
-                        Image.asset("lib/images/casa2.png", width: 200,),
-                        Column(
-                            children: [
-                            Text('Descripcion breve'),
-                            Text('#'),
-                            Text('3av sur villaflores'),
-                            ],
-                          ),
-                        SizedBox(width: 25,),
-                        Image.asset("lib/images/PuntosNavegacion.png")
-                      ],
-                    )
-                  )
-                ],
-              ),
-            ),
-            SizedBox(height: 10,),
-            Container(
-              color: Color.fromRGBO(236, 236, 236, 1),
-              child: Column(
-                children: [
-                  Align(
-                    child: Row(
-                      children: [
-                        Image.asset("lib/images/casa1.png", width: 200,),
-                      Column(
-                            children: [
-                            Text('Descripcion breve'),
-                            Text('# '),
-                            Text('3av sur villaflores'),
-                            ],
-                          ),
-                        SizedBox(width: 25,),
-                        Image.asset("lib/images/PuntosNavegacion.png")
-                      ],
-                    )
-                  )
-                ],
-              ),
-            ),
+            PropertyItem(imagePath: "lib/images/casa1.png", description: "Descripcion breve", address: "3av sur villaflores"),
+            const SizedBox(height: 10),
+            PropertyItem(imagePath: "lib/images/casa2.png", description: "Descripcion breve", address: "3av sur villaflores"),
+            const SizedBox(height: 10),
+            PropertyItem(imagePath: "lib/images/casa1.png", description: "Descripcion breve", address: "3av sur villaflores"),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class PropertyItem extends StatelessWidget {
+  final String imagePath;
+  final String description;
+  final String address;
+
+  const PropertyItem({
+    required this.imagePath,
+    required this.description,
+    required this.address,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: const Color.fromRGBO(236, 236, 236, 1),
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        children: [
+          Image.asset(imagePath, width: 100, height: 100),
+          const SizedBox(width: 20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(description),
+              Text('# '),
+              Text(address),
+            ],
+          ),
+          const Spacer(),
+          Image.asset("lib/images/PuntosNavegacion.png", width: 30),
+        ],
       ),
     );
   }

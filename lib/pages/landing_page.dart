@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'app_drawer.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -37,64 +38,7 @@ class _LandingPageState extends State<LandingPage> {
           ],
         ),
       ),
-      endDrawer: Drawer(
-        child: Container(
-          color: Color(0xFF8487EE),
-          child: Column(
-            children: <Widget>[
-              UserAccountsDrawerHeader(
-                decoration: BoxDecoration(
-                  color: Color(0xFF8487EE),
-                ),
-                accountName: Text('Nombre', style: TextStyle(color: Colors.white)),
-                accountEmail: null,
-                currentAccountPicture: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.person,
-                    size: 40.0,
-                    color: Color(0xFF8487EE),
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.account_circle, color: Colors.white),
-                title: Text('Mi cuenta', style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.arrow_forward_ios, color: Colors.white),
-                onTap: () {
-                  Navigator.pushNamed(context, '/account');
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.home, color: Colors.white),
-                title: Text('Mis casas', style: TextStyle(color: Colors.white)),
-                trailing: Icon(Icons.arrow_forward_ios, color: Colors.white),
-                onTap: () {
-                  Navigator.pushNamed(context, '/myhouse');
-                },
-              ),
-              Spacer(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/');
-                  },
-                  child: Text('Cerrar sesión', style: TextStyle(color: Colors.white)),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      endDrawer: const AppDrawer(), 
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -137,8 +81,8 @@ class _LandingPageState extends State<LandingPage> {
                         });
                       },
                       children: <Widget>[
-                        _buildImageCarousel('lib/images/CasaSuchiapa.jpg', 'Villaflores'),
-                        _buildImageCarousel('lib/images/CasaVillaflores.jpg', 'Suchiapa'),
+                        _buildImageCarousel('lib/images/casa1.png', 'Villaflores'),
+                        _buildImageCarousel('lib/images/casa2.png', 'Suchiapa'),
                         _buildImageCarousel('lib/images/CasaTuxtla.jpg', 'Tuxtla'),
                       ],
                     ),
@@ -205,8 +149,8 @@ class _LandingPageState extends State<LandingPage> {
                 child: Column(
                   children: <Widget>[
                     _buildRecommendation("Casa villaflores - muy buena", 'lib/images/user1.png', 5),
-                    _buildRecommendation("Depto Suchiapa - Excelente", 'lib/images/user2.png', 4),
-                    _buildRecommendation("Casa Suchiapa - Buena casa", 'lib/images/user3.png', 3),
+                    _buildRecommendation("Depto Suchiapa - Excelente", 'lib/images/user1.png', 4),
+                    _buildRecommendation("Casa Suchiapa - Buena casa", 'lib/images/user1.png', 3),
                   ],
                 ),
               ),
