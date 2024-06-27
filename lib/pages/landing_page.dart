@@ -72,7 +72,7 @@ class _LandingPageState extends State<LandingPage> {
               Stack(
                 children: [
                   SizedBox(
-                    height: 250,
+                    height: 320,
                     child: PageView(
                       controller: _pageController,
                       onPageChanged: (int index) {
@@ -129,7 +129,7 @@ class _LandingPageState extends State<LandingPage> {
                   );
                 }),
               ),
-              const SizedBox(height: 10.0),
+              const SizedBox(height: 20.0),
               Text(
                 "RECOMENDACIONES",
                 style: TextStyle(
@@ -166,25 +166,29 @@ class _LandingPageState extends State<LandingPage> {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(8.0),
-          child: Image.asset(imagePath, fit: BoxFit.cover, width: 300),
+          child: Image.asset(imagePath, fit: BoxFit.cover, width: 270),
         ),
-        const SizedBox(height: 5),
-        Text(
-          location,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 16,
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(5, (index) {
-            return Icon(
-              index < 5 ? Icons.star : Icons.star_border,
-              color: Colors.amber,
-              size: 16.0,
-            );
-          }),
+        const SizedBox(height: 20),
+        Column(
+          children: [
+            Text(
+              location,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(5, (index) {
+                return Icon(
+                  index < 5 ? Icons.star : Icons.star_border,
+                  color: Colors.amber,
+                  size: 16.0,
+                );
+              }),
+            ),
+          ],
         ),
       ],
     );
@@ -192,7 +196,7 @@ class _LandingPageState extends State<LandingPage> {
 
   Widget _buildRecommendation(String text, String userImagePath, int rating) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      padding: const EdgeInsets.symmetric(vertical: .0),
       child: Row(
         children: [
           CircleAvatar(
@@ -211,7 +215,7 @@ class _LandingPageState extends State<LandingPage> {
                   children: List.generate(5, (index) {
                     return Icon(
                       index < rating ? Icons.star : Icons.star_border,
-                      size: 16.0,
+                      size: 10.0,
                       color: Colors.amber,
                     );
                   }),
