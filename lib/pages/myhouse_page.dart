@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'app_drawer.dart';  // Importa AppDrawer aquí
+import 'app_drawer.dart';
+import 'propertyitem.dart'; 
+import 'edithouse_page.dart';
 
 class MyHousePage extends StatefulWidget {
   const MyHousePage({super.key});
@@ -9,6 +11,25 @@ class MyHousePage extends StatefulWidget {
 }
 
 class _MyHousePageState extends State<MyHousePage> {
+  List<Map<String, String>> properties = [
+    {
+      "imagePath": "lib/images/casa1.png",
+      "description": "Descripcion breve",
+      "address": "3av sur villaflores",
+      "estado": "Estado",
+      "municipio": "Municipio",
+      "precio": "\$100,000",
+      "disponibilidad": "Disponible"
+    },
+   
+  ];
+
+  void _deleteProperty(int index) {
+    setState(() {
+      properties.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +89,6 @@ class _MyHousePageState extends State<MyHousePage> {
               const SizedBox(height: 20),
               Container(
                 width: double.infinity,
-                color: Color.fromRGBO(132, 135, 238, 1),
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: const Center(
                   child: Text(
@@ -93,53 +113,37 @@ class _MyHousePageState extends State<MyHousePage> {
           ],
         ),
       ),
-      endDrawer: const AppDrawer(),  
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            PropertyItem(imagePath: "lib/images/casa1.png", description: "Descripcion breve", address: "3av sur villaflores"),
-            const SizedBox(height: 10),
-            PropertyItem(imagePath: "lib/images/casa2.png", description: "Descripcion breve", address: "3av sur villaflores"),
-            const SizedBox(height: 10),
-            PropertyItem(imagePath: "lib/images/casa1.png", description: "Descripcion breve", address: "3av sur villaflores"),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class PropertyItem extends StatelessWidget {
-  final String imagePath;
-  final String description;
-  final String address;
-
-  const PropertyItem({
-    required this.imagePath,
-    required this.description,
-    required this.address,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: const Color.fromRGBO(236, 236, 236, 1),
-      padding: const EdgeInsets.all(10),
-      child: Row(
-        children: [
-          Image.asset(imagePath, width: 100, height: 100),
-          const SizedBox(width: 20),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(description),
-              Text('# '),
-              Text(address),
-            ],
-          ),
-          const Spacer(),
-          Image.asset("lib/images/PuntosNavegacion.png", width: 30),
-        ],
+      endDrawer: const AppDrawer(),
+      body: ListView.builder(
+        itemCount: properties.length,
+        itemBuilder: (context, index) {
+          final property = properties[index];
+          return PropertyItem(
+            imagePath: property["imagePath"]!,
+            description: property["description"]!,
+            address: property["address"]!,
+            estado: property["estado"]!,
+            municipio: property["municipio"]!,
+            precio: property["precio"]!,
+            disponibilidad: property["disponibilidad"]!,
+            onDelete: () => _deleteProperty(index),
+            onEdit: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => EditHousePage(
+                    imagePath: property["imagePath"]!,
+                    description: property["description"]!,
+                    address: property["address"]!,
+                    estado: property["estado"]!,
+                    municipio: property["municipio"]!,
+                    precio: property["precio"]!,
+                    disponibilidad: property["disponibilidad"]!,
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
