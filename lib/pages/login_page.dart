@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -9,6 +12,40 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _loginUser() async {
+    final String username = _usernameController.text;
+    final String password = _passwordController.text;
+
+    final url = Uri.parse('http://18.235.24.106:2024/api/users/$username/$password');
+
+    try {
+      final response = await http.get(url, headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('jwtToken', data['token']); 
+        await prefs.setString('userMail', data['data']['mail']);
+        await prefs.setString('userPhone', data['data']['numberPhone']);
+
+        Navigator.pushNamed(context, '/landing');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al iniciar sesión: ${response.body}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error de conexión: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,12 +102,13 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 40.0),
-                  const SizedBox(
+                  SizedBox(
                     width: 300.0,
                     height: 40,
                     child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Nombre de usuario',
+                      controller: _usernameController,
+                      decoration: const InputDecoration(
+                        labelText: 'Correo electronico',
                         border: OutlineInputBorder(),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
@@ -81,11 +119,12 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 50.0),
-                  const SizedBox(
+                  SizedBox(
                     width: 300.0,
                     height: 40,
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: _passwordController,
+                      decoration: const InputDecoration(
                         labelText: 'Contraseña',
                         border: OutlineInputBorder(),
                         enabledBorder: OutlineInputBorder(
@@ -101,9 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     width: 200,
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/landing');
-                      },
+                      onPressed: _loginUser,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromRGBO(76, 81, 230, 1),
                         foregroundColor: Colors.white,

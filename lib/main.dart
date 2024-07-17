@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Homing',
       theme: ThemeData(
         colorScheme:
             ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 67, 93, 241)),
@@ -30,11 +30,11 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),
-        '/login': (context) => login.LoginPage(), 
+        '/login': (context) => login.LoginPage(),
         '/register': (context) => RegisterPage(),
         '/landing': (context) => const LandingPage(),
         '/searchpage': (context) => SearchPage(searchTerm: ''),
-        '/info': (context) => const LocationPage(location: '',),
+        '/info': (context) => const LocationPage(location: ''),
         '/account': (context) => const AccountPage(),
         '/myhouse': (context) => const MyHousePage(),
         '/addhome': (context) => const AddHomePage(),

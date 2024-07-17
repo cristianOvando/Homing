@@ -1,7 +1,32 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
-class AccountPage extends StatelessWidget {
+class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
+
+  @override
+  _AccountPageState createState() => _AccountPageState();
+}
+
+class _AccountPageState extends State<AccountPage> {
+  String _email = 'Cargando...';
+  String _phoneNumber = 'Cargando...';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _email = prefs.getString('userMail') ?? 'Correo no encontrado';
+      _phoneNumber = prefs.getString('userPhone') ?? 'Número no encontrado';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +35,7 @@ class AccountPage extends StatelessWidget {
         title: Text("Mi cuenta"),
         backgroundColor: const Color(0xFF9DA0F1),
       ),
-      body: SingleChildScrollView( 
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
@@ -19,7 +44,7 @@ class AccountPage extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundImage: AssetImage('lib/images/user1.png'), 
+                    backgroundImage: AssetImage('lib/images/user1.png'),
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -30,13 +55,13 @@ class AccountPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            _buildInfoField('Correo electrónico', 'usuario@ejemplo.com'),
+            _buildInfoField('Correo electrónico', _email),
             const SizedBox(height: 10),
-            _buildInfoField('Número de teléfono', '+123 456 7890'),
+            _buildInfoField('Número de teléfono', _phoneNumber),
             const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF8487EE), 
+                backgroundColor: const Color(0xFF8487EE),
                 foregroundColor: Colors.white,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
@@ -90,6 +115,47 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
+  Future<void> _changePassword() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('jwtToken');
+
+    if (token == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No se encontró el token de autenticación')),
+      );
+      return;
+    }
+
+    if (_newPasswordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Las contraseñas no coinciden')),
+      );
+      return;
+    }
+
+    final url = Uri.parse('http://18.235.24.106:2024/api/users/updatePassword');
+    final response = await http.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({'password': _newPasswordController.text}),
+    );
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Contraseña cambiada exitosamente')),
+      );
+      Navigator.of(context).pop();
+    } else {
+      print('Error al cambiar la contraseña: ${response.body}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al cambiar la contraseña: ${response.body}')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -124,22 +190,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
           child: Text('Cancelar'),
         ),
         ElevatedButton(
-          onPressed: () {
-            if (_newPasswordController.text == _confirmPasswordController.text) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Contraseña cambiada exitosamente'),
-                ),
-              );
-              Navigator.of(context).pop();
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Las contraseñas no coinciden'),
-                ),
-              );
-            }
-          },
+          onPressed: _changePassword,
           child: Text('Cambiar'),
         ),
       ],

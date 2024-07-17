@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:homing/pages/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -11,6 +13,51 @@ class _RegisterPageState extends State<RegisterPage> {
   String _selectedPosition = 'Campo laboral'; 
 
   List<String> position = ['Campo laboral', 'Estudiante', 'Profesional', 'Mayor de edad'];
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _lastnameController = TextEditingController();
+  final TextEditingController _mailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+
+  Future<void> _registerUser() async {
+    final String name = _nameController.text;
+    final String lastname = _lastnameController.text;
+    final String mail = _mailController.text;
+    final String password = _passwordController.text;
+    final String phone = _phoneController.text;
+    final String genre = _selectedGender;
+    final String laborField = _selectedPosition;
+
+    final url = Uri.parse('http://18.235.24.106:2024/api/users');
+
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'name': name,
+        'lastname': lastname,
+        'mail': mail,
+        'password': password,
+        'genre': genre,
+        'numberPhone': phone,
+        'laborField': laborField,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al registrar el usuario')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       height: 40,
                       width: double.infinity,
                       child: TextField(
+                        controller: _nameController,
                         decoration: InputDecoration(
                           labelText: 'Nombres',
                           border: OutlineInputBorder(
@@ -84,6 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       height: 40,
                       width: double.infinity,
                       child: TextField(
+                        controller: _lastnameController,
                         decoration: InputDecoration(
                           labelText: 'Apellidos',
                           border: OutlineInputBorder(
@@ -99,6 +148,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       height: 40,
                       width: double.infinity,
                       child: TextField(
+                        controller: _mailController,
                         decoration: InputDecoration(
                           labelText: 'Correo',
                           border: OutlineInputBorder(
@@ -114,6 +164,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       height: 40,
                       width: double.infinity,
                       child: TextField(
+                        controller: _passwordController,
                         decoration: InputDecoration(
                           labelText: 'Contraseña',
                           border: OutlineInputBorder(
@@ -209,6 +260,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       height: 40,
                       width: double.infinity,
                       child: TextField(
+                        controller: _phoneController,
                         decoration: InputDecoration(
                           labelText: 'No. Teléfono',
                           border: OutlineInputBorder(
@@ -255,22 +307,17 @@ class _RegisterPageState extends State<RegisterPage> {
                     SizedBox(height: 40.0,),
                     Align(
                       alignment: Alignment.center,
-                  child: SizedBox(
-                    width: 400,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context, 
-                          MaterialPageRoute(builder: (context) => LoginPage()),
-                          );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromRGBO(76, 81, 230, 1),
-                        foregroundColor: Colors.white,
+                      child: SizedBox(
+                        width: 400,
+                        child: ElevatedButton(
+                          onPressed: _registerUser,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromRGBO(76, 81, 230, 1),
+                            foregroundColor: Colors.white,
+                          ),
+                          child: Text('Registrarse'),
+                        ),
                       ),
-                      child: Text('Registrarse'),
-                    ),
-                  ),
                     )
                   ],
                 ),
@@ -282,3 +329,4 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 }
+
