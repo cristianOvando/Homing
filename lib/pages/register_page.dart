@@ -32,31 +32,35 @@ class _RegisterPageState extends State<RegisterPage> {
     final url = Uri.parse('http://18.235.24.106:2024/api/users');
 
     final response = await http.post(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'name': name,
-        'lastname': lastname,
-        'mail': mail,
-        'password': password,
-        'genre': genre,
-        'numberPhone': phone,
-        'laborField': laborField,
-      }),
-    );
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'name': name,
+      'lastname': lastname,
+      'mail': mail,
+      'password': password,
+      'genre': genre,
+      'numberPhone': phone,
+      'laborField': laborField,
+    }),
+  );
 
-    if (response.statusCode == 200) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al registrar el usuario')),
-      );
-    }
+  print('Status code: ${response.statusCode}');
+  print('Response body: ${response.body}');
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error al registrar el usuario: ${response.body}')),
+    );
+  }
+
   }
 
   @override

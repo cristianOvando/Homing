@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'location_page.dart'; // Asegúrate de importar LocationPage
+import 'location_page.dart';
 
 class SearchPage extends StatefulWidget {
   final String searchTerm;
