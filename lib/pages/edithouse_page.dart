@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class EditHousePage extends StatefulWidget {
+  final String houseId;
   final String imagePath;
   final String description;
   final String address;
@@ -11,6 +14,7 @@ class EditHousePage extends StatefulWidget {
 
   const EditHousePage({
     super.key,
+    required this.houseId,
     required this.imagePath,
     required this.description,
     required this.address,
@@ -40,7 +44,7 @@ class _EditHousePageState extends State<EditHousePage> {
     _estadoController = TextEditingController(text: widget.estado);
     _municipioController = TextEditingController(text: widget.municipio);
     _precioController = TextEditingController(text: widget.precio);
-    _disponibilidad = widget.disponibilidad; 
+    _disponibilidad = widget.disponibilidad;
   }
 
   @override
@@ -53,18 +57,52 @@ class _EditHousePageState extends State<EditHousePage> {
     super.dispose();
   }
 
-  void _saveChanges() {
-    Navigator.pop(context, {
+  void _saveChanges() async {
+    final updatedHouseData = {
       'description': _descriptionController.text,
-      'address': _addressController.text,
-      'estado': _estadoController.text,
-      'municipio': _municipioController.text,
-      'precio': _precioController.text,
-      'disponibilidad': _disponibilidad,
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Cambios guardados')),
-    );
+      'street': _addressController.text,
+      'state': _estadoController.text,
+      'municipality': _municipioController.text,
+      'price': _precioController.text,
+      'status': _disponibilidad,
+    };
+
+    try {
+      final response = await http.put(
+        Uri.parse('http://18.235.24.106:2024/api/houses/${widget.houseId}'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(updatedHouseData),
+      );
+
+      if (response.statusCode == 200) {
+        Navigator.pop(context);
+      } else {
+        print('Error al actualizar la casa: ${response.body}');
+      }
+    } catch (error) {
+      print('Error de conexión: $error');
+    }
+  }
+
+  void _deleteHouse() async {
+    try {
+      final response = await http.delete(
+        Uri.parse('http://tu_api_url/houses/${widget.houseId}'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        Navigator.pop(context);
+      } else {
+        print('Error al eliminar la casa: ${response.body}');
+      }
+    } catch (error) {
+      print('Error de conexión: $error');
+    }
   }
 
   @override
@@ -125,9 +163,18 @@ class _EditHousePageState extends State<EditHousePage> {
               onPressed: _saveChanges,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF4C51E6),
-                foregroundColor: Colors.white,  
+                foregroundColor: Colors.white,
               ),
               child: Text('Guardar'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _deleteHouse,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
+              child: Text('Eliminar'),
             ),
           ],
         ),

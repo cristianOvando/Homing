@@ -24,75 +24,58 @@ class _AddHomePageState extends State<AddHomePage> {
   File? _image;
 
   Future<void> _pickImage() async {
-    try {
-      final ImagePicker _picker = ImagePicker();
-      final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
-      if (pickedFile != null) {
-        File imageFile = File(pickedFile.path);
-        final img.Image? image = img.decodeImage(await imageFile.readAsBytes());
-        final img.Image resized = img.copyResize(image!, width: 800);
-        final Directory tempDir = Directory.systemTemp;
-        final String tempPath = tempDir.path;
-        final File resizedImageFile = File('$tempPath/resized_image.jpg')
-          ..writeAsBytesSync(img.encodeJpg(resized, quality: 85));
-
-        setState(() {
-          _image = resizedImageFile;
-        });
-      } else {
-        print('No image selected.');
-      }
-    } catch (e) {
-      print('Error picking image: $e');
+    final ImagePicker _picker = ImagePicker();
+    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
     }
   }
 
   Future<void> _addHouse() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('jwtToken');
+    String? userId = prefs.getString('userId');
 
-    if (token == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No se encontró el token de autenticación')),
-      );
-      return;
+    if (userId == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('No se encontró el ID del usuario')),
+        );
+        return;
     }
 
     final request = http.MultipartRequest('POST', Uri.parse('http://18.235.24.106:2024/api/houses'));
-    request.headers['Authorization'] = 'Bearer $token';
     request.fields['description'] = _descriptionController.text;
     request.fields['street'] = _streetController.text;
     request.fields['state'] = _stateController.text;
     request.fields['municipality'] = _municipalityController.text;
     request.fields['price'] = _priceController.text;
     request.fields['status'] = _selectedAvailability ?? '';
+    request.fields['userId'] = userId; 
 
     if (_image != null) {
-      request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
-    } else {
-      print('No image to upload.');
+        request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
     }
 
     try {
-      final response = await request.send();
+        final response = await request.send();
 
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Casa agregada exitosamente')),
-        );
-        Navigator.pushNamed(context, '/nextadd');
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al agregar la casa')),
-        );
-      }
+        if (response.statusCode == 201) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Casa agregada exitosamente')),
+            );
+            Navigator.pushNamed(context, '/nextadd');
+        } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Error al agregar la casa: ${response.reasonPhrase}')),
+            );
+        }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error de conexión: $e')),
-      );
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error de conexión: $e')),
+        );
     }
-  }
+}
 
   @override
   Widget build(BuildContext context) {

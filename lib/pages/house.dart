@@ -1,6 +1,4 @@
 import 'dart:typed_data';
-
-
 class House {
   final String id;
   final String description;

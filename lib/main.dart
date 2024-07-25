@@ -29,17 +29,17 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => HomePage(),
-        '/login': (context) => login.LoginPage(),
-        '/register': (context) => RegisterPage(),
-        '/landing': (context) => LandingPage(),
-        '/searchpage': (context) => SearchPage(searchTerm: ''),
-        '/info': (context) => const LocationPage(location: ''),
-        '/account': (context) => const AccountPage(),
-        '/myhouse': (context) => const MyHousePage(),
-        '/addhome': (context) => const AddHomePage(),
-        '/nextadd': (context) => const NextAddHomePage(),
-      },
+          '/': (context) => HomePage(),
+          '/login': (context) => login.LoginPage(),
+          '/register': (context) => RegisterPage(),
+          '/landing': (context) => LandingPage(),
+          '/searchpage': (context) => SearchPage(searchTerm: ''),
+          '/info': (context) => const LocationPage(location: ''),
+          '/account': (context) => const AccountPage(),
+          '/myhouse': (context) => const MyHousePage(),
+          '/addhome': (context) => const AddHomePage(),
+          '/nextadd': (context) => const NextAddHomePage(),
+        },
     );
   }
 }

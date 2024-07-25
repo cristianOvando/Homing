@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'edithouse_page.dart';
+import 'package:http/http.dart' as http;
 
 class PropertyItem extends StatelessWidget {
+  final String houseId;
   final String imagePath;
   final String description;
   final String address;
@@ -13,6 +14,7 @@ class PropertyItem extends StatelessWidget {
   final VoidCallback onEdit;
 
   const PropertyItem({
+    required this.houseId,
     required this.imagePath,
     required this.description,
     required this.address,
@@ -26,143 +28,67 @@ class PropertyItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: Key(imagePath),
-      background: slideRightBackground(), 
-      secondaryBackground: slideLeftBackground(), 
-      confirmDismiss: (direction) async {
-        if (direction == DismissDirection.startToEnd) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => EditHousePage(
-                imagePath: imagePath,
-                description: description,
-                address: address,
-                estado: estado,
-                municipio: municipio,
-                precio: precio,
-                disponibilidad: disponibilidad,
-              ),
-            ),
-          );
-          return false;
-        } else {
-          return showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text('Confirmar'),
-                content: Text('¿Estás seguro de que quieres eliminar la casa de la lista?'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: Text('No'),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    child: Text('Sí'),
-                  ),
-                ],
-              );
-            },
-          );
-        }
-      },
-      child: Container(
-        color: const Color.fromRGBO(236, 236, 236, 1),
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          children: [
-            Image.asset(imagePath, width: 100, height: 100),
-            const SizedBox(width: 20),
-            Column(
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (imagePath.isNotEmpty)
+            Image.network(imagePath, width: 100, height: 100, fit: BoxFit.cover)
+          else
+            Image.asset('lib/images/default_image.png', width: 100, height: 100, fit: BoxFit.cover),
+          SizedBox(width: 10),
+          Expanded(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(description),
-                Text('# '),
-                Text(address),
+                Text(description, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                SizedBox(height: 5),
+                Text(address, style: TextStyle(fontSize: 14)),
               ],
             ),
-            const Spacer(),
-            IconButton(
-              icon: Icon(Icons.more_vert),
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        ListTile(
-                          leading: Icon(Icons.edit),
-                          title: Text('Editar'),
-                          onTap: onEdit,
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.delete),
-                          title: Text('Eliminar'),
-                          onTap: () {
-                            Navigator.pop(context);
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text('Confirmar'),
-                                  content: Text('¿Estás seguro de que quieres eliminar la casa de la lista?'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () => Navigator.of(context).pop(false),
-                                      child: Text('No'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () => Navigator.of(context).pop(true),
-                                      child: Text('Sí'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ).then((confirmed) {
-                              if (confirmed) {
-                                onDelete();
-                              }
-                            });
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
-          ],
-        ),
+          ),
+          IconButton(
+            icon: Icon(Icons.delete, color: Colors.red),
+            onPressed: () => _confirmDelete(context),
+          ),
+        ],
       ),
     );
   }
 
-  Widget slideLeftBackground() {
-    return Container(
-      color: Colors.red,
-      child: Align(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Icon(Icons.delete, color: Colors.white),
-        ),
-        alignment: Alignment.centerRight,
+  void _confirmDelete(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Confirmar eliminación'),
+        content: Text('¿Estás seguro de que deseas eliminar esta casa?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await _deleteHouse();
+            },
+            child: Text('Eliminar'),
+          ),
+        ],
       ),
     );
   }
 
-  Widget slideRightBackground() {
-    return Container(
-      color: Color(0xFF4C51E6), 
-      child: Align(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Icon(Icons.edit, color: Colors.white),
-        ),
-        alignment: Alignment.centerLeft,
-      ),
+  Future<void> _deleteHouse() async {
+    final response = await http.delete(
+      Uri.parse('http://18.235.24.106:2024/api/houses/$houseId'),
     );
+
+    if (response.statusCode == 200) {
+      onDelete();
+    } else {
+      print('Error al eliminar la casa: ${response.reasonPhrase}');
+    }
   }
 }

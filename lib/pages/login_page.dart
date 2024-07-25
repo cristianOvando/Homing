@@ -16,35 +16,42 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   Future<void> _loginUser() async {
-    final String username = _usernameController.text;
-    final String password = _passwordController.text;
+  final String username = _usernameController.text;
+  final String password = _passwordController.text;
 
-    final url = Uri.parse('http://18.235.24.106:2024/api/users/$username/$password');
+  final url = Uri.parse('http://18.235.24.106:2024/api/users/$username/$password');
 
-    try {
-      final response = await http.get(url, headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      });
+  try {
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      
+      if (data != null && data['data'] != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('jwtToken', data['token']); 
+        await prefs.setString('userId', data['data']['userId']);
         await prefs.setString('userMail', data['data']['mail']);
         await prefs.setString('userPhone', data['data']['numberPhone']);
 
         Navigator.pushNamed(context, '/landing');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al iniciar sesión: ${response.body}')),
+          SnackBar(content: Text('Datos de usuario incompletos')),
         );
       }
-    } catch (e) {
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error de conexión: $e')),
+        SnackBar(content: Text('Error al iniciar sesión: ${response.body}')),
       );
     }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error de conexión: $e')),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
